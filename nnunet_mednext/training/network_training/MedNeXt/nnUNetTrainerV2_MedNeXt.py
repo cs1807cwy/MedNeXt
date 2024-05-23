@@ -99,6 +99,27 @@ class nnUNetTrainerV2_MedNeXt_M_kernel3(nnUNetTrainerV2_Optim_and_LR):
             self.network.cuda()
 
 
+class nnUNetTrainerV2_MedNeXt_M_kernel3_2d(nnUNetTrainerV2_Optim_and_LR):
+
+    def initialize_network(self):
+        self.network = MedNeXt(
+            in_channels = self.num_input_channels,
+            n_channels = 32,
+            n_classes = self.num_classes,
+            exp_r=[2,3,4,4,4,4,4,3,2],         # Expansion ratio as in Swin Transformers
+            kernel_size=3,                     # Can test kernel_size
+            deep_supervision=True,             # Can be used to test deep supervision
+            do_res=True,                      # Can be used to individually test residual connection
+            do_res_up_down = True,
+            block_counts = [3,4,4,4,4,4,4,4,3],
+            checkpoint_style = 'outside_block',
+            dim='2d'
+        )
+
+        if torch.cuda.is_available():
+            self.network.cuda()
+
+
 class nnUNetTrainerV2_MedNeXt_L_kernel3(nnUNetTrainerV2_Optim_and_LR):   
         
     def initialize_network(self):
